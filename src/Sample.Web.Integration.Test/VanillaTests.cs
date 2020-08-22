@@ -1,38 +1,32 @@
 namespace Sample.Web.Integration.Test
 {
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc.Testing;
-    using Sample.Web.Integration.Webpp;
+    using Newtonsoft.Json;
+    using Sample.Web.Integration.WebApi;
+    using Sample.Web.Integration.WebApi.Models;
     using Xunit;
 
     public class VanillaTests 
-        : IClassFixture<WebApplicationFactory<Startup>>
+        : IClassFixture<MyCustomWebApplicationFactory<Startup>>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly MyCustomWebApplicationFactory<Startup> _factory;
 
-        public VanillaTests(WebApplicationFactory<Startup> factory)
+        public VanillaTests(MyCustomWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
         }
 
-        [Theory]
-        [InlineData("/")]
-        //[InlineData("/Index")]
-        //[InlineData("/About")]
-        [InlineData("/Home/Privacy")]
-        //[InlineData("/Contact")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+        [Fact]
+        public async Task TestPersonRepository()
         {
-            // Arrange
             var client = _factory.CreateClient();
 
-            // Act
-            var response = await client.GetAsync(url);
-
-            // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("text/html; charset=utf-8", 
-                response.Content.Headers.ContentType.ToString());
+            var response = await client.GetAsync("Person");
+            var person = (IPerson) JsonConvert.DeserializeObject<Person>(await response.Content.ReadAsStringAsync());
+            
+            response.EnsureSuccessStatusCode(); 
+            
+            Assert.Equal(EnvironmentType.Test, person.Environment);
         }
     }
 }
