@@ -1,2 +1,3 @@
-# sample-web-integration-tests
-a sample solution for running web integration test
+# Integration test samples for ASP.NET Core MVC applications
+
+Different branches will illustrate different maturities of the solution
