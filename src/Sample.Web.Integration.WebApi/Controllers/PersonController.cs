@@ -28,5 +28,12 @@
         {
             return _personRepository.Get(1);
         }
+
+        [Authorize]
+        [HttpGet("Secured")]
+        public string Secured()
+        {
+            return "Secured!";
+        }
     }
 }

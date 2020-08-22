@@ -1,4 +1,4 @@
-namespace Sample.Web.Integration.Test
+namespace Sample.Web.Integration.Test.Services
 {
     using System.Collections.Generic;
     using System.Linq;
