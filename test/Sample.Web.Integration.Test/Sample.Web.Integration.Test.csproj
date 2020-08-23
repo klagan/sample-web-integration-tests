@@ -20,7 +20,7 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sample.Web.Integration.WebApi\Sample.Web.Integration.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\Sample.Web.Integration.WebApi\Sample.Web.Integration.WebApi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">

@@ -14,15 +14,18 @@ namespace Sample.Web.Integration.Test
     using Sample.Web.Integration.WebApi;
     using Sample.Web.Integration.WebApi.Models;
     using Xunit;
+    using Xunit.Abstractions;
 
     public class VanillaTests 
         : IClassFixture<MyWebApplicationFactory<Startup>>
     {
         private readonly MyWebApplicationFactory<Startup> _factory;
+        private ITestOutputHelper _outputHelper;
 
-        public VanillaTests(MyWebApplicationFactory<Startup> factory)
+        public VanillaTests(MyWebApplicationFactory<Startup> factory, ITestOutputHelper outputHelper)
         {
             _factory = factory;
+            _outputHelper = outputHelper;
             
             var configuration = _factory.Services.GetService<IConfiguration>();
 
@@ -34,7 +37,7 @@ namespace Sample.Web.Integration.Test
         }
 
         [Fact]
-        public async Task TestPersonRepository()
+        public async Task Test_that_we_have_replaced_the_dependent_service_with_our_own_fake()
         {
             var client = _factory.CreateClient();
             
@@ -44,6 +47,8 @@ namespace Sample.Web.Integration.Test
             response.EnsureSuccessStatusCode(); 
             
             Assert.Equal(EnvironmentType.Test, person.Environment);
+            
+            _outputHelper.WriteLine("example of writing to test output");
         }
         
         /// <summary>
@@ -58,6 +63,8 @@ namespace Sample.Web.Integration.Test
             var response = await client.GetAsync("/Person/Secured");
             
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            
+            _outputHelper.WriteLine("another example of writing to test output");
         }
         
         [Fact]
@@ -82,6 +89,8 @@ namespace Sample.Web.Integration.Test
             
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal("Secured!", result);
+            
+            _outputHelper.WriteLine("and another example of writing to test output");
         }
     }
 }
