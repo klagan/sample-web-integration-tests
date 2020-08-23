@@ -4,12 +4,10 @@ namespace Sample.Web.Integration.Test
     using System.Net;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.TestHost;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
-    using Sample.Web.Integration.Test.Models;
+    using Sample.MyAuthentication.Helpers;
     using Sample.Web.Integration.Test.Services;
     using Sample.Web.Integration.WebApi;
     using Sample.Web.Integration.WebApi.Models;
@@ -20,17 +18,18 @@ namespace Sample.Web.Integration.Test
         : IClassFixture<MyWebApplicationFactory<Startup>>
     {
         private readonly MyWebApplicationFactory<Startup> _factory;
-        private ITestOutputHelper _outputHelper;
+        private readonly ITestOutputHelper _outputHelper;
+        private readonly IConfiguration _configuration;
 
         public VanillaTests(MyWebApplicationFactory<Startup> factory, ITestOutputHelper outputHelper)
         {
             _factory = factory;
             _outputHelper = outputHelper;
             
-            var configuration = _factory.Services.GetService<IConfiguration>();
+            _configuration = _factory.Services.GetService<IConfiguration>();
 
             var testSettings = new TestConfiguration();
-            configuration.GetSection(TestConstants.TestConfigurationSection).Bind(testSettings);
+            _configuration.GetSection("Test").Bind(testSettings);
 
             _factory.ClientOptions.BaseAddress = new Uri(testSettings.BaseAddress);
             _factory.ClientOptions.AllowAutoRedirect = false; // set to false for authn/authn tests
@@ -70,19 +69,13 @@ namespace Sample.Web.Integration.Test
         [Fact]
         public async Task When_attempt_to_access_secure_endpoint_by_authorised_user_Then_returned_200()
         {
-            var client = _factory.WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services.AddAuthentication(TestConstants.TestAuthenticationSchemeName)
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(
-                                TestConstants.TestAuthenticationSchemeName, options => { });
-                    });
-                })
-                .CreateClient();
-
-            client.DefaultRequestHeaders.Authorization = 
-                new AuthenticationHeaderValue(TestConstants.TestAuthenticationSchemeName);
+            var client = _factory.CreateClient();
+            
+            // TODO: look to move this into a more generic place - configure clients?
+            var token = ResourceOwnerPasswordAuthentication.GetToken(_configuration);
+            
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
 
             var response = await client.GetAsync("/Person/Secured");
             var result = await response.Content.ReadAsStringAsync();

@@ -1,12 +1,11 @@
 namespace Sample.Web.Integration.WebApi
 {
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.AzureAD.UI;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Identity.Web;
     using Sample.Web.Integration.WebApi.Services;
 
     public class Startup
@@ -24,8 +23,7 @@ namespace Sample.Web.Integration.WebApi
             IServiceCollection services
         )
         {
-            services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
-                .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
+            services.AddProtectedWebApi(Configuration);
 
             services.AddTransient<IPersonRepository, PersonRepository>();
 

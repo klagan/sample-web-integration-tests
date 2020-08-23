@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".test", ".test", "{8C1A5AB4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web.Integration.Test", "test\Sample.Web.Integration.Test\Sample.Web.Integration.Test.csproj", "{01DD5F0E-F3FA-4ABF-B96E-9D084A1A7758}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.MyAuthentication.Helpers", "src\Sample.MyAuthentication.Helpers\Sample.MyAuthentication.Helpers.csproj", "{1EC60394-1671-4D1A-8AD0-8B76785D108E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{01DD5F0E-F3FA-4ABF-B96E-9D084A1A7758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01DD5F0E-F3FA-4ABF-B96E-9D084A1A7758}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01DD5F0E-F3FA-4ABF-B96E-9D084A1A7758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC60394-1671-4D1A-8AD0-8B76785D108E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC60394-1671-4D1A-8AD0-8B76785D108E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC60394-1671-4D1A-8AD0-8B76785D108E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC60394-1671-4D1A-8AD0-8B76785D108E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FC23D4B6-D44A-498C-82D1-5CE17A681D5C} = {124F205C-C9F3-48C0-A7F2-4B4D50F547E6}
 		{01DD5F0E-F3FA-4ABF-B96E-9D084A1A7758} = {8C1A5AB4-9227-4D5A-BD3A-3E4702F5F8D9}
+		{1EC60394-1671-4D1A-8AD0-8B76785D108E} = {124F205C-C9F3-48C0-A7F2-4B4D50F547E6}
 	EndGlobalSection
 EndGlobal

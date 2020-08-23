@@ -3,10 +3,12 @@ namespace Sample.Web.Integration.Test.Services
     using System;
     using System.IO;
     using System.Linq;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using Sample.Web.Integration.WebApi.Services;
 
     public class MyWebApplicationFactory<TStartup>
@@ -18,19 +20,6 @@ namespace Sample.Web.Integration.Test.Services
         )
         {
             builder
-                .ConfigureAppConfiguration(configurationBuilder =>
-                {
-                    var environmentName =
-                        Environment.GetEnvironmentVariable("ASPNET_ENVIRONMENT") ??
-                        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
-                        "Development";
-
-                    configurationBuilder
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
-                        .AddEnvironmentVariables();
-                })
                 .ConfigureServices(services =>
                 {
                     // find the production service in the service container (personrepository)
